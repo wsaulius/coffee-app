@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Coffee Beans
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card [button]="true" (click)="setOpen(true)">
+    <ion-card-header>
+      <ion-card-title>SomeBrand Coffee</ion-card-title>
+      <ion-card-subtitle>100% Arabica</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Delicious!
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Bean information</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">
+              <lucide-icon [img]="X"></lucide-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-fab slot="fixed" vertical="bottom" horizontal="end">          
+          <ion-fab-button>
+            <lucide-icon [img]="Star"></lucide-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
