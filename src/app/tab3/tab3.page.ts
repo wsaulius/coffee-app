@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonItemGroup, IonSearchbar, IonItemDivider, IonItem, IonLabel } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 
 @Component({
   selector: 'app-tab3',

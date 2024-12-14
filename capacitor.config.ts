@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'app',
+  appId: 'com.gitlab.robustetus.coffee-app',
+  appName: 'coffee-app',
   webDir: 'www'
 };
 
