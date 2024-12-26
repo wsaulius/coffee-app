@@ -28,6 +28,7 @@
     "@capacitor/keyboard": "6.0.3",
     "@capacitor/status-bar": "6.0.2",
     "@ionic/angular": "^8.0.0",
+    "@ionic/storage-angular": "^4.0.0",
     "@lucide/lab": "^0.1.2",
     "ionicons": "^7.2.1",
     "lucide-angular": "^0.464.0",

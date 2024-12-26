@@ -10,17 +10,17 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card [button]="true" (click)="setOpen(true)">
-    <ion-card-header>
-      <ion-card-title>SomeBrand Coffee</ion-card-title>
-      <ion-card-subtitle>100% Arabica</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      Delicious!
-    </ion-card-content>
-  </ion-card>
+  @for (bean of beanResponse; track bean.id) {
+    <ion-card [button]="true" (click)="setOpen(true)">
+      <ion-card-header>
+        <ion-card-title>{{ bean.name }}</ion-card-title>
+      </ion-card-header>
   
+      <ion-card-content>{{ bean.description ?? "No description" }}</ion-card-content>
+    </ion-card>
+  } @empty {
+    
+  }
   <ion-modal [isOpen]="isModalOpen">
     <ng-template>
       <ion-header>
