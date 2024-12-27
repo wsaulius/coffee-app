@@ -14,5 +14,5 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withFetch()),
     Storage,
-  ],
+  ]
 });

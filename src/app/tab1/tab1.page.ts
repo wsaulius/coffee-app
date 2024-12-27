@@ -1,41 +1,36 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonBackButton, IonCard, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
-import { LucideAngularModule, X, Star, StarOff, Coffee } from 'lucide-angular';
+import { IonHeader, ModalController, IonBackButton, IonCard, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
 import { BEANS_STORAGE } from '../app.constants';
 import { CoffeeBean } from '../model/bean';
 import { CoffeeSpecies } from '../model/species';
 import { CoffeeBeanListing } from '../model/api-responses';
 import { CoffeeService } from '../api/coffee.service'
+import { DetailPage } from '../detail/detail.page';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton, LucideAngularModule],
+  imports: [DetailPage, IonHeader, IonToolbar, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton],
   providers: [AppStorageService, CoffeeService],
 })
 
 export class Tab1Page {
-  readonly Star = Star;
-  readonly StarOff = StarOff;
-  readonly X = X;
   beansArray: Array<CoffeeBean> = [];
-  isModalOpen = false;
   beanResponse?: Array<CoffeeBeanListing>;
 
   constructor(
     private appStorage: AppStorageService,
     private coffeeService: CoffeeService,
+    private modalCtrl: ModalController,
   ) {}
 
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
-  }
   saveBeans(beans: Array<CoffeeBean>) {
     this.appStorage.set(BEANS_STORAGE, beans)
   }
+
   async ionViewDidEnter() {
     this.coffeeService.getAllCoffeeBeans().subscribe({
       next: (data) => {
@@ -52,6 +47,17 @@ export class Tab1Page {
         this.generateMockData();
       }
     }
+  }
+
+  async showDetail(beanId: Number) {
+    const modal = await this.modalCtrl.create({
+      component: DetailPage,
+      componentProps: {
+        beanId: beanId,
+        drinkId: null,
+      }
+    });
+    return await modal.present();
   }
 
   private generateMockData() {

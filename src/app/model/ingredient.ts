@@ -1,9 +1,9 @@
 export class CoffeeIngredient {
-    name: string;
+    ingredient: string;
     content: Number;
 
-    constructor(name: string, content: Number) {
-        this.name = name;
+    constructor(ingredient: string, content: Number) {
+        this.ingredient = ingredient;
         this.content = content;
     }
 }

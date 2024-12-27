@@ -4,28 +4,28 @@ import { CoffeeSpecies } from "./species";
 export interface CoffeeDrinkListing {
     id: Number;
     name: string;
-    description: string;
-    image_url: string;
+    description: string | null;
+    image_url: string | null;
 }
 
 export interface CoffeeBeanListing {
     id: Number;
     name: string;
-    description: string;
+    description: string | null;
 }
 
 export interface CoffeeDrinkDetail {
     name: string;
-    description: string;
-    image_url: string;
+    description: string | null;
+    image_url: string | null;
     ingredients: Array<CoffeeIngredient>;
 }
 
 export interface CoffeeBeanDetail {
     name: string;
-    description: string;
+    description: string | null;
     roast: Number;
     species: CoffeeSpecies;
     country_origin: Array<string>;
-    couontry_roasted: string;
+    country_roasted: string;
 }

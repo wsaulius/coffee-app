@@ -1,13 +1,103 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>detail</ion-title>
+    <ion-title>Detail</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <lucide-icon [img]="X"></lucide-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">          
+    <ion-fab-button (click)="favorite()">
+      <lucide-icon [img]="Star"></lucide-icon>
+    </ion-fab-button>
+  </ion-fab>
+  @if (bean) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ bean.name }}
+        </ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        {{ bean.description ?? "No description" }}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ bean.species.name }}
+        </ion-card-title>
+      </ion-card-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <ion-card-content>
+        {{ bean.species.description }}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Coffee bean roast
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Roast level: {{ bean.roast }}</p>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Coffee bean geographical information
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Country of roastage: {{ bean.country_roasted }}</p>
+        @if(bean.country_origin.length > 1) {
+          <p>Countries of origin</p>
+          <ul>
+            @for (country of bean.country_origin; track country) {
+              <li>{{ country }}</li>
+            }
+          </ul>
+        } @else if (bean.country_origin.length == 1) {
+          <p>Country of origin: {{ bean.country_origin[0] }}</p>
+        }
+      </ion-card-content>
+    </ion-card>
+
+  } @else if (drink) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ drink.name }}
+        </ion-card-title>
+      </ion-card-header>
+      
+      @if (drink.image_url != "" || drink.image_url != null) {
+        <img src="{{ drink.image_url }}" />
+      }
+      <ion-card-content>
+        {{ drink.description ?? "No description" }}
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          Ingredients and contents
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        @for (ingredient of drink.ingredients; track ingredient.ingredient) {
+          <p>{{ ingredient.content }}ml of {{ ingredient.ingredient }}</p>
+        }
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    Loading...
+  }
 </ion-content>

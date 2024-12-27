@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonModal, IonButtons, IonFabButton, IonFab, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail } from '@ionic/angular/standalone';
+import { IonModal, IonButtons, IonFabButton, ModalController, IonFab, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail } from '@ionic/angular/standalone';
 import { LucideAngularModule, X, Star, StarOff } from 'lucide-angular';
 import { AppStorageService } from '../app-storage.service';
 import { DRINKS_STORAGE } from '../app.constants';
@@ -8,6 +8,7 @@ import { CoffeeDrink } from '../model/drink';
 import { CoffeeIngredient } from '../model/ingredient';
 import { CoffeeService } from '../api/coffee.service';
 import { CoffeeDrinkListing } from '../model/api-responses';
+import { DetailPage } from '../detail/detail.page';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class Tab2Page {
   constructor(
     private appStorage: AppStorageService,
     private coffeeService: CoffeeService,
+    private modalCtrl: ModalController,
   ) {}
 
   setOpen(isOpen: boolean) {
@@ -53,6 +55,17 @@ export class Tab2Page {
         this.generateMockData();
       }
     }
+  }
+
+  async showDetail(drinkId: Number) {
+    const modal = await this.modalCtrl.create({
+      component: DetailPage,
+      componentProps: {
+        beanId: null,
+        drinkId: drinkId,
+      }
+    });
+    return await modal.present();
   }
 
   private generateMockData() {
