@@ -34,7 +34,6 @@ export class Tab1Page {
   async ionViewDidEnter() {
     this.coffeeService.getAllCoffeeBeans().subscribe({
       next: (data) => {
-        console.log(data);
         this.beanResponse = data;
       },
     });
@@ -53,11 +52,10 @@ export class Tab1Page {
     const modal = await this.modalCtrl.create({
       component: DetailPage,
       componentProps: {
-        beanId: beanId,
-        drinkId: null,
+        beanId: beanId
       }
     });
-    return await modal.present();
+    modal.present();
   }
 
   private generateMockData() {

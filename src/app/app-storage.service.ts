@@ -27,4 +27,39 @@ export class AppStorageService {
   public set(key: string, value: any) {
     this._storage?.set(key, value)
   }
+  
+  async clear(key: string) {
+    return await this._storage?.clear();
+  }
+
+  // Functions for array manipulation
+  async add(key: string, value: any) {
+    if(! await this.contains(key, value)) {
+      var content: Array<any> = await this._storage?.get(key);
+      content.push(value);
+      await this._storage?.set(key, content);
+    }
+  }
+
+  async remove(key: string, value: any) {
+    if(await this.contains(key, value)) {
+      var content: Array<any> = await this._storage?.get(key);
+      content.splice(content.indexOf(value));
+      await this._storage?.set(key, content);
+    }
+  }
+    
+  async contains(key: string, value: any) {
+    if (await this._storage?.get(key) instanceof Array) {
+      const content: Array<any> = await this._storage?.get(key);
+      for (var i of content.values()) {
+        if (JSON.stringify(i) == JSON.stringify(value)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  // ---
+  
 }

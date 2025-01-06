@@ -11,7 +11,7 @@
 <ion-content class="ion-padding">
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">          
     <ion-fab-button (click)="favorite()">
-      <lucide-icon [img]="Star"></lucide-icon>
+      <lucide-icon [img]="favoritedState"></lucide-icon>
     </ion-fab-button>
   </ion-fab>
   @if (bean) {
@@ -62,7 +62,7 @@
               <li>{{ country }}</li>
             }
           </ul>
-        } @else if (bean.country_origin.length == 1) {
+        } @else if (bean.country_origin.length === 1) {
           <p>Country of origin: {{ bean.country_origin[0] }}</p>
         }
       </ion-card-content>
@@ -76,7 +76,7 @@
         </ion-card-title>
       </ion-card-header>
       
-      @if (drink.image_url != "" || drink.image_url != null) {
+      @if (drink.image_url !== "" || drink.image_url !== null) {
         <img src="{{ drink.image_url }}" />
       }
       <ion-card-content>
