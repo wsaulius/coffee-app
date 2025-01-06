@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { IonHeader, ModalController, IonBackButton, IonCard, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
-import { BEANS_STORAGE } from '../app.constants';
+import { BEANS_FETCHED } from '../app.constants';
 import { CoffeeBean } from '../model/bean';
 import { CoffeeSpecies } from '../model/species';
 import { CoffeeBeanListing } from '../model/api-responses';
-import { CoffeeService } from '../api/coffee.service'
+import { CoffeeService } from '../api/coffee.service';
 import { DetailPage } from '../detail/detail.page';
 
 @Component({
@@ -18,8 +18,7 @@ import { DetailPage } from '../detail/detail.page';
 })
 
 export class Tab1Page {
-  beansArray: Array<CoffeeBean> = [];
-  beanResponse?: Array<CoffeeBeanListing>;
+  beansArray: Array<CoffeeBeanListing> = [];
 
   constructor(
     private appStorage: AppStorageService,
@@ -27,24 +26,28 @@ export class Tab1Page {
     private modalCtrl: ModalController,
   ) {}
 
-  saveBeans(beans: Array<CoffeeBean>) {
-    this.appStorage.set(BEANS_STORAGE, beans)
+  cacheBeans(beans: Array<CoffeeBeanListing>) {
+    this.appStorage.set(BEANS_FETCHED, beans);
+  }
+
+  async fetchBeans() {
+    this.coffeeService.getAllCoffeeBeans().subscribe({
+      next: (data) => {
+        this.cacheBeans(data);
+      },
+    });
+  }
+
+  updateView(data: Array<CoffeeBeanListing>) {
+    this.beansArray = data;
   }
 
   async ionViewDidEnter() {
-    this.coffeeService.getAllCoffeeBeans().subscribe({
-      next: (data) => {
-        this.beanResponse = data;
-      },
-    });
-
-    const data = await this.appStorage.get(BEANS_STORAGE);
+    const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
-      this.beansArray = data;
+       this.updateView(data);
     } else {
-      if (this.beansArray.length === 0) {
-        this.generateMockData();
-      }
+      this.fetchBeans();
     }
   }
 
@@ -58,6 +61,7 @@ export class Tab1Page {
     modal.present();
   }
 
+  // Unused mock data
   private generateMockData() {
     const sample1 = new CoffeeBean(1, "Sample Coffee Beans", "Delicious!", 3, new CoffeeSpecies("Arabica", "Classic"), ["Brazil", "India", "Mexico"], "Czechia");
     const sample2 = new CoffeeBean(2, "Some other Coffee Beans", "Also delicious!", 4, new CoffeeSpecies("Robusta", "Also classic"), ["Brazil"], "Italy");

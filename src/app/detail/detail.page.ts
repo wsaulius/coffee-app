@@ -6,8 +6,10 @@ import { IonContent, ModalController, IonHeader, IonTitle, IonModal, IonCardHead
 import { CoffeeBeanDetail, CoffeeDrinkDetail } from '../model/api-responses';
 import { AppStorageService } from '../app-storage.service';
 import { CoffeeService } from '../api/coffee.service';
-import { BEANS_FAVORITED, DRINKS_FAVORITED } from '../app.constants';
+import { BEANS_STORAGE, DRINKS_STORAGE, BEANS_FAVORITED, DRINKS_FAVORITED } from '../app.constants';
 import { LucideIconData } from 'lucide-angular/icons/types';
+import { CoffeeBean } from '../model/bean';
+import { CoffeeDrink } from '../model/drink';
 
 @Component({
   selector: 'app-detail',
@@ -20,10 +22,10 @@ export class DetailPage {
   favoritedState: LucideIconData = Ellipsis;
   readonly X: LucideIconData = X;
   
-  beanId?: number;
-  drinkId?: number;
-  bean?: CoffeeBeanDetail;
-  drink?: CoffeeDrinkDetail;
+  beanId: number | undefined;
+  drinkId: number | undefined;
+  bean: CoffeeBean | null = null;
+  drink: CoffeeDrink | null = null;
 
   constructor(
     private appStorage: AppStorageService,
@@ -31,21 +33,59 @@ export class DetailPage {
     private modalCtrl: ModalController,
   ) { }
 
+  async fetchBeanDetails(id: Number) {
+    this.coffeeService.getCoffeeBean(id).subscribe({
+      next: async (data) => {
+        this.appStorage.add(BEANS_STORAGE, new CoffeeBean(id, data.name, data.description, data.roast, data.species, data.country_origin, data.country_roasted));
+      },
+    });
+  }
+
+  async fetchDrinkDetails(id: Number) {
+    this.coffeeService.getCoffeeDrink(id).subscribe({
+      next: async (data) => {
+        this.appStorage.add(DRINKS_STORAGE, new CoffeeDrink(id, data.name, data.description, data.image_url, data.ingredients));
+      },
+    });
+  }
+
+  async getBean(beanId: Number){
+    const cache : Array<CoffeeBean> | null = await this.appStorage.get(BEANS_STORAGE);
+    if(cache !== null) {
+      const cachedBean = cache.find((bean) => bean.id === beanId);
+      if (cachedBean !== undefined) {
+        return cachedBean;
+      }
+    }
+    this.fetchBeanDetails(beanId);
+    return null;
+  }
+
+  async getDrink(drinkId: Number){
+    const cache : Array<CoffeeDrink> | null = await this.appStorage.get(DRINKS_STORAGE);
+    if(cache !== null) {
+      const cachedDrink = cache.find((drink) => drink.id === drinkId);
+      if (cachedDrink !== undefined) {
+        return cachedDrink;
+      }
+    }
+    this.fetchDrinkDetails(drinkId);
+    return null;
+  }
+
   async ionViewDidEnter() {
-    if(this.beanId) {
-      this.coffeeService.getCoffeeBean(this.beanId).subscribe({
-        next: async (data) => {
-          this.bean = data;
-          this.favoritedState = await this.setIcon();
-        },
-      });
-    } else if (this.drinkId) {
-      this.coffeeService.getCoffeeDrink(this.drinkId).subscribe({
-        next: async (data) => {
-          this.drink = data;
-          this.favoritedState = await this.setIcon();
-        },
-      });
+    if(this.beanId !== undefined) {
+      let result;
+      do {
+        result = await this.getBean(this.beanId);
+      } while (result === null);
+      this.bean = result;
+    } else if (this.drinkId !== undefined) {
+      let result;
+      do {
+        result = await this.getDrink(this.drinkId);
+      } while (result === null);
+      this.drink = result;
     }
     this.favoritedState = await this.setIcon();
   }
@@ -68,7 +108,6 @@ export class DetailPage {
   }
 
   async favorite() {
-    var output: Array<any> = [];
     if(this.bean) {
       if (!Array.isArray(await this.appStorage.get(BEANS_FAVORITED))) {
         this.appStorage.set(BEANS_FAVORITED, new Array<CoffeeBeanDetail>);
@@ -91,8 +130,7 @@ export class DetailPage {
         this.appStorage.add(DRINKS_FAVORITED, this.drink);
       }
     }
-    this.favoritedState = await this.setIcon();
-    return this.modalCtrl.dismiss(null, 'favorite-change');
+    return this.modalCtrl.dismiss(null, 'save');
   }
 
 }

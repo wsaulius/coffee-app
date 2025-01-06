@@ -14,7 +14,7 @@
       <lucide-icon [img]="favoritedState"></lucide-icon>
     </ion-fab-button>
   </ion-fab>
-  @if (bean) {
+  @if (bean !== null) {
     <ion-card>
       <ion-card-header>
         <ion-card-title>
@@ -68,7 +68,7 @@
       </ion-card-content>
     </ion-card>
 
-  } @else if (drink) {
+  } @else if (drink !== null) {
     <ion-card>
       <ion-card-header>
         <ion-card-title>

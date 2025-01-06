@@ -11,13 +11,17 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    @for (drink of drinkResponse; track drink.id) {
-      <ion-item [button]="true" (click)="showDetail(drink.id)">
-        <ion-thumbnail slot="start">
-          <img src="{{ drink.image_url ?? 'https://live.staticflickr.com/2469/3547568034_4d2204bd31_q_d.jpg' }}" />
-        </ion-thumbnail>
-        <ion-label>{{ drink.name }}</ion-label>
-      </ion-item>
+    @if (drinksArray.length === 0) {
+      <p>Failed to fetch data! :(</p>
+    } @else {
+      @for (drink of drinksArray; track drink.id) {
+        <ion-item [button]="true" (click)="showDetail(drink.id)">
+          <ion-thumbnail slot="start">
+            <img src="{{ drink.image_url ?? 'https://live.staticflickr.com/2469/3547568034_4d2204bd31_q_d.jpg' }}" />
+          </ion-thumbnail>
+          <ion-label>{{ drink.name }}</ion-label>
+        </ion-item>
+      }
     }
   </ion-list>
 </ion-content>

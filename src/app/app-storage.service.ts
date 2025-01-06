@@ -36,8 +36,12 @@ export class AppStorageService {
   async add(key: string, value: any) {
     if(! await this.contains(key, value)) {
       var content: Array<any> = await this._storage?.get(key);
-      content.push(value);
-      await this._storage?.set(key, content);
+      if(content !== null) {
+        content.push(value);
+        await this._storage?.set(key, content);
+      } else {
+        this._storage?.set(key, [value]);
+      }
     }
   }
 

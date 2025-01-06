@@ -2,14 +2,14 @@ import { CoffeeSpecies } from "./species";
 export class CoffeeBean {
     id: Number;
     name: string;
-    description: string;
+    description: string | null;
     roast: Number;
     species: CoffeeSpecies;
     country_origin: Array<string>;
     country_roasted: string;
 
 
-    constructor(id: Number, name: string, description: string, roast: Number, species: CoffeeSpecies, country_origin: Array<string>, country_roasted: string){
+    constructor(id: Number, name: string, description: string | null, roast: Number, species: CoffeeSpecies, country_origin: Array<string>, country_roasted: string){
         this.id = id;
         this.name = name;
         this.description = description;
