@@ -20,16 +20,18 @@ export class Tab3Page {
     private appStorage: AppStorageService,
   ) {}
 
-  beans?: Array<CoffeeBean>;
-  drinks?: Array<CoffeeDrink>;
+  beans: Array<CoffeeBean> = [];
+  drinks: Array<CoffeeDrink> = [];
 
   async ionViewDidEnter() {
-    this.refreshView();
+    const beans = await this.appStorage.get(BEANS_FAVORITED);
+    const drinks = await this.appStorage.get(DRINKS_FAVORITED);
+    this.updateView(beans, drinks);
   }
 
-  async refreshView() {
-    this.beans = await this.appStorage.get(BEANS_FAVORITED);
-    this.drinks = await this.appStorage.get(DRINKS_FAVORITED);
+  updateView(beans: Array<CoffeeBean>, drinks: Array<CoffeeDrink>) {
+    this.beans = beans;
+    this.drinks = drinks;
   }
 
   async showBeanDetail(bean: CoffeeBean) {
@@ -41,10 +43,10 @@ export class Tab3Page {
     });
     modal.present();
     const { data, role } = await modal.onWillDismiss();
-
-    if (role === "save") {
-      this.refreshView();
+    if(role !== 'cancel'){
+      this.updateView(data, this.drinks);
     }
+
   }
 
   async showDrinkDetail(drink: CoffeeDrink) {
@@ -56,9 +58,8 @@ export class Tab3Page {
     });
     modal.present();
     const { data, role } = await modal.onWillDismiss();
-
-    if (role === "save") {
-      this.refreshView();
+    if(role !== 'cancel') {
+      this.updateView(this.beans, data);
     }
   }
 

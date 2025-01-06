@@ -39,18 +39,25 @@ export class AppStorageService {
       if(content !== null) {
         content.push(value);
         await this._storage?.set(key, content);
+        return content;
       } else {
         this._storage?.set(key, [value]);
+        return [value];
       }
     }
+    return null;
   }
 
   async remove(key: string, value: any) {
     if(await this.contains(key, value)) {
       var content: Array<any> = await this._storage?.get(key);
-      content.splice(content.indexOf(value));
+      content.forEach( (item, index) => {
+        if(JSON.stringify(item) == JSON.stringify(value)) { content.splice(index, 1); }
+      });
       await this._storage?.set(key, content);
+      return content;
     }
+    return null;
   }
     
   async contains(key: string, value: any) {

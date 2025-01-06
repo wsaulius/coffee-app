@@ -34,6 +34,7 @@ export class Tab1Page {
     this.coffeeService.getAllCoffeeBeans().subscribe({
       next: (data) => {
         this.cacheBeans(data);
+        this.updateView(data);
       },
     });
   }
@@ -45,7 +46,7 @@ export class Tab1Page {
   async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
     const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
-       this.updateView(data);
+      this.updateView(data);
     } else {
       this.fetchBeans();
     }

@@ -39,6 +39,7 @@ export class Tab2Page {
     this.coffeeService.getAllCoffeeDrinks().subscribe({
       next: (data) => {
         this.cacheDrinks(data);
+        this.updateView(data);
       },
     });
   }
@@ -50,7 +51,7 @@ export class Tab2Page {
   async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
     const data = await this.appStorage.get(DRINKS_FETCHED);
     if (data) {
-       this.updateView(data);
+      this.updateView(data);
     } else {
       this.fetchDrinks();
     }

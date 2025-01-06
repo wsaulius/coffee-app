@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Input, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, X, Star, StarOff, Ellipsis } from 'lucide-angular';
 import { IonContent, ModalController, IonHeader, IonTitle, IonModal, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonCard, IonFab, IonToolbar, IonButtons, IonButton, IonFabButton } from '@ionic/angular/standalone';
-import { CoffeeBeanDetail, CoffeeDrinkDetail } from '../model/api-responses';
 import { AppStorageService } from '../app-storage.service';
 import { CoffeeService } from '../api/coffee.service';
 import { BEANS_STORAGE, DRINKS_STORAGE, BEANS_FAVORITED, DRINKS_FAVORITED } from '../app.constants';
@@ -24,8 +23,8 @@ export class DetailPage {
   
   beanId: number | undefined;
   drinkId: number | undefined;
-  bean: CoffeeBean | null = null;
-  drink: CoffeeDrink | null = null;
+  @Input() bean: CoffeeBean | null = null;
+  @Input() drink: CoffeeDrink | null = null;
 
   constructor(
     private appStorage: AppStorageService,
@@ -73,7 +72,7 @@ export class DetailPage {
     return null;
   }
 
-  async ionViewDidEnter() {
+  async ionViewDidEnter() { // TODO: speed this up!
     if(this.beanId !== undefined) {
       let result;
       do {
@@ -107,22 +106,24 @@ export class DetailPage {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  async favorite() {
-    if(this.bean !== null) {
-      if(await this.appStorage.contains(BEANS_FAVORITED, this.bean)) {
-        this.appStorage.remove(BEANS_FAVORITED, this.bean);
-      } else {
-        this.appStorage.add(BEANS_FAVORITED, this.bean);
-      }
+  async saveBean(bean: CoffeeBean) {
+    let data;
+    if(await this.appStorage.contains(BEANS_FAVORITED, bean)) {
+      data = await this.appStorage.remove(BEANS_FAVORITED, bean);
+    } else {
+      data = await this.appStorage.add(BEANS_FAVORITED, bean);
     }
-    else if (this.drink !== null) {
-      if(await this.appStorage.contains(DRINKS_FAVORITED, this.drink)) {
-        this.appStorage.remove(DRINKS_FAVORITED, this.drink);
-      } else {
-        this.appStorage.add(DRINKS_FAVORITED, this.drink);
-      }
+    return this.modalCtrl.dismiss(data, 'save');
+  }
+
+  async saveDrink(drink: CoffeeDrink) {
+    let data;
+    if(await this.appStorage.contains(DRINKS_FAVORITED, drink)) {
+      data = await this.appStorage.remove(DRINKS_FAVORITED, drink);
+    } else {
+      data = await this.appStorage.add(DRINKS_FAVORITED, drink);
     }
-    return this.modalCtrl.dismiss(null, 'save');
+    return this.modalCtrl.dismiss(data, 'save'); 
   }
 
 }

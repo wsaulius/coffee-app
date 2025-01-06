@@ -10,16 +10,15 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  @if (beansArray.length === 0) {
+  @for (bean of beansArray; track bean.id) {
+    <ion-card [button]="true" (click)="showDetail(bean.id)">
+      <ion-card-header>
+        <ion-card-title>{{ bean.name }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>{{ bean.description ?? "No description" }}</ion-card-content>
+    </ion-card>
+  } @empty {
     <p>Failed to fetch data! :(</p>
-  } @else {
-    @for (bean of beansArray; track bean.id) {
-      <ion-card [button]="true" (click)="showDetail(bean.id)">
-        <ion-card-header>
-          <ion-card-title>{{ bean.name }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>{{ bean.description ?? "No description" }}</ion-card-content>
-      </ion-card>
-    }
   }
+
 </ion-content>
