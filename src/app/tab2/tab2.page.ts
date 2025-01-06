@@ -47,7 +47,7 @@ export class Tab2Page {
     this.drinksArray = data;
   }
 
-  async ionViewDidEnter() {
+  async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
     const data = await this.appStorage.get(DRINKS_FETCHED);
     if (data) {
        this.updateView(data);

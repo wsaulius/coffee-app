@@ -42,7 +42,7 @@ export class Tab1Page {
     this.beansArray = data;
   }
 
-  async ionViewDidEnter() {
+  async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
     const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
        this.updateView(data);

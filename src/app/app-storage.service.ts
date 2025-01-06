@@ -61,6 +61,8 @@ export class AppStorageService {
           return true;
         }
       }
+    } else {
+      this._storage?.set(key, new Array<any>());
     }
     return false;
   }

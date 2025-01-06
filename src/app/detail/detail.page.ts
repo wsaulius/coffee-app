@@ -108,22 +108,14 @@ export class DetailPage {
   }
 
   async favorite() {
-    if(this.bean) {
-      if (!Array.isArray(await this.appStorage.get(BEANS_FAVORITED))) {
-        this.appStorage.set(BEANS_FAVORITED, new Array<CoffeeBeanDetail>);
-      }
-
+    if(this.bean !== null) {
       if(await this.appStorage.contains(BEANS_FAVORITED, this.bean)) {
         this.appStorage.remove(BEANS_FAVORITED, this.bean);
       } else {
         this.appStorage.add(BEANS_FAVORITED, this.bean);
       }
     }
-    else if (this.drink) {
-      if (!Array.isArray(await this.appStorage.get(DRINKS_FAVORITED))) {
-        this.appStorage.set(DRINKS_FAVORITED, new Array<CoffeeDrinkDetail>);
-      }
-      
+    else if (this.drink !== null) {
       if(await this.appStorage.contains(DRINKS_FAVORITED, this.drink)) {
         this.appStorage.remove(DRINKS_FAVORITED, this.drink);
       } else {
