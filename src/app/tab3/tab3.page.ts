@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, ModalController, IonItemGroup, IonSearchbar, IonItemDivider, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, ModalController, IonItemGroup, IonSearchbar, IonItemDivider, IonButton, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
 import { BEANS_FAVORITED, DRINKS_FAVORITED } from '../app.constants';
 import { DetailPage } from '../detail/detail.page';
 import { CoffeeBean } from '../model/bean';
 import { CoffeeDrink } from '../model/drink';
+import { LucideAngularModule, Settings } from 'lucide-angular';
+import { SettingsPage } from '../settings/settings.page';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonItemGroup, IonSearchbar, IonItemDivider, IonItem, IonLabel],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonItemGroup, IonSearchbar, IonItemDivider, IonButton, IonItem, IonLabel, LucideAngularModule],
 })
 
 export class Tab3Page {
@@ -19,6 +21,7 @@ export class Tab3Page {
     private modalCtrl: ModalController,
     private appStorage: AppStorageService,
   ) {}
+  readonly settingsIcon = Settings
 
   beans: Array<CoffeeBean> = [];
   drinks: Array<CoffeeDrink> = [];
@@ -46,6 +49,15 @@ export class Tab3Page {
     if(role !== 'cancel'){
       this.updateView(data, this.drinks);
     }
+
+  }
+
+  async openSettings() {
+    const modal = await this.modalCtrl.create({
+      component: SettingsPage,
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
 
   }
 
