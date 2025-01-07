@@ -10,3 +10,5 @@ export const BEANS_FETCHED = 'beans_fetched'
 // API Endpoint
 export const API_ENDPOINT = 'api_endpoint'
 export const API_KEY = 'api_key'
+// Other
+export const MUSIC_OPTION = 'music_option'

@@ -21,7 +21,9 @@
       <ion-card-content>{{ bean.description ?? "No description" }}</ion-card-content>
     </ion-card>
   } @empty {
-    <p>Nothing found!</p>
+    <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <p style="font-size: 20px;">Nothing found!</p>
+    </div>
   }
 
 </ion-content>

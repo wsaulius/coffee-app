@@ -9,6 +9,7 @@ import { CoffeeService } from '../api/coffee.service';
 import { DetailPage } from '../detail/detail.page';
 import { FilterPipe } from '../filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { AudioService } from 'src/audio/audio.service';
 
 
 @Component({

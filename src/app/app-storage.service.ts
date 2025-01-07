@@ -8,9 +8,7 @@ export class AppStorageService {
 
   private _storage: Storage | null = null;
 
-  constructor(private storage: Storage) {
-    this.init();
-  }
+  constructor(private storage: Storage) {}
 
   async init() {
     // If using, define drivers here: await this.storage.defineDriver(/*...*/);

@@ -2,7 +2,7 @@ import { Input, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, X, Star, StarOff, Ellipsis } from 'lucide-angular';
-import { IonContent, ModalController, IonHeader, IonTitle, IonModal, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonCard, IonFab, IonToolbar, IonButtons, IonButton, IonFabButton } from '@ionic/angular/standalone';
+import { IonContent, ModalController, IonHeader, IonTitle, IonModal, IonCardHeader, IonSpinner, IonCardTitle, IonCardSubtitle, IonCardContent, IonCard, IonFab, IonToolbar, IonButtons, IonButton, IonFabButton } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
 import { CoffeeService } from '../api/coffee.service';
 import { BEANS_STORAGE, DRINKS_STORAGE, BEANS_FAVORITED, DRINKS_FAVORITED } from '../app.constants';
@@ -15,7 +15,7 @@ import { CoffeeDrink } from '../model/drink';
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCardSubtitle, IonToolbar, IonButtons, IonButton, CommonModule, FormsModule, LucideAngularModule, IonFab, IonFabButton]
+  imports: [IonContent, IonHeader, IonTitle, IonModal, IonCard, IonCardHeader, IonSpinner, IonCardTitle, IonCardContent, IonCardSubtitle, IonToolbar, IonButtons, IonButton, CommonModule, FormsModule, LucideAngularModule, IonFab, IonFabButton]
 })
 export class DetailPage {
   favoritedState: LucideIconData = Ellipsis;

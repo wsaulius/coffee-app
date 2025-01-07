@@ -14,18 +14,28 @@
       <lucide-icon [img]="applyChanges"></lucide-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>General</ion-label> 
+    </ion-list-header>
+  </ion-list>
+  <ion-item>
+    <ion-toggle [(ngModel)]="music">Enable Music</ion-toggle>
+  </ion-item>
+
   <ion-list>
     <ion-list-header>
       <ion-label>API Settings</ion-label>
     </ion-list-header>
     <ion-item>
-      <ion-input type="text" label="API endpoint" placeholder="Enter URL of compatible coffee API" value="{{ apiEndpoint }}" [(ngModel)]="apiEndpoint"></ion-input>
+      <ion-input type="text" label="API endpoint" placeholder="Enter URL of compatible coffee API" [(ngModel)]="apiEndpoint"></ion-input>
       <ion-button fill="clear" slot="end" (click)="reset()">
         <lucide-icon [img]="RotateCcw"></lucide-icon>
       </ion-button>
     </ion-item>
     <ion-item>
-      <ion-input type="password" label="API key" placeholder="Enter your secret API key" value="{{ apiKey }}" [(ngModel)]="apiKey"></ion-input>
+      <ion-input type="password" label="API key" placeholder="Enter your secret API key" [(ngModel)]="apiKey"></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>

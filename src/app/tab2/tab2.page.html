@@ -13,16 +13,16 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list>
-    @for (drink of drinksArray | filter : searchText; track drink.id) {
-      <ion-item [button]="true" (click)="showDetail(drink.id)">
-        <ion-thumbnail slot="start">
-          <img src="{{ drink.image_url ?? 'https://live.staticflickr.com/2469/3547568034_4d2204bd31_q_d.jpg' }}" />
-        </ion-thumbnail>
-        <ion-label>{{ drink.name }}</ion-label>
-      </ion-item>
-    } @empty {
-      <p>Nothing found!</p>
-    }
-  </ion-list>
+  @for (drink of drinksArray | filter : searchText; track drink.id) {
+    <ion-item [button]="true" (click)="showDetail(drink.id)">
+      <ion-thumbnail slot="start">
+        <img src="{{ drink.image_url ?? 'https://live.staticflickr.com/2469/3547568034_4d2204bd31_q_d.jpg' }}" />
+      </ion-thumbnail>
+      <ion-label>{{ drink.name }}</ion-label>
+    </ion-item>
+  } @empty {
+    <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <p style="font-size: 20px;">Nothing found!</p>
+    </div>
+  }
 </ion-content>

@@ -8,8 +8,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  @if (bean !== null) {
+@if (bean !== null) {
+  <ion-content class="ion-padding beans">
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button (click)="saveBean(bean)">
         <lucide-icon [img]="favoritedState"></lucide-icon>
@@ -67,8 +67,10 @@
         }
       </ion-card-content>
     </ion-card>
+  </ion-content>
 
   } @else if (drink !== null) {
+    <ion-content class="ion-padding drinks">
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button (click)="saveDrink(drink)">
         <lucide-icon [img]="favoritedState"></lucide-icon>
@@ -80,13 +82,14 @@
           {{ drink.name }}
         </ion-card-title>
       </ion-card-header>
-      
-      @if (drink.image_url !== "" || drink.image_url !== null) {
-        <img src="{{ drink.image_url }}" />
-      }
-      <ion-card-content>
-        {{ drink.description ?? "No description" }}
-      </ion-card-content>
+      <div style="display: flex;">
+        <ion-card-content style="display: inline-block;">
+          {{ drink.description ?? "No description" }}
+        </ion-card-content>
+        @if (drink.image_url !== "" || drink.image_url !== null) {
+          <img src="{{ drink.image_url }}" style="display: inline-block; padding: 25px; object-fit: contain; object-position: top;"/>
+        }
+      </div>
     </ion-card>
 
     <ion-card>
@@ -102,7 +105,11 @@
         }
       </ion-card-content>
     </ion-card>
+  </ion-content>
   } @else {
-    Loading...
+    <ion-content>
+      <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+        <ion-spinner name="dots" style="width: 100px; height: 100px;"></ion-spinner>
+      </div>
+    </ion-content>
   }
-</ion-content>

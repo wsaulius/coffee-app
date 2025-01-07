@@ -2,6 +2,7 @@ import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonTabs, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
 import { LucideAngularModule, Coffee, Star } from 'lucide-angular';
 import { coffeeBean } from '@lucide/lab';
+import { AudioService } from 'src/audio/audio.service';
 
 @Component({
   selector: 'app-tabs',
@@ -16,6 +17,6 @@ export class TabsPage {
   readonly coffeeBean = coffeeBean;
   readonly Star = Star;
 
-  constructor() {
+  constructor(private audioService: AudioService) {
   }
 }
