@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   @for (bean of beansArray | filter : searchText; track bean.id) {
     <ion-card [button]="true" (click)="showDetail(bean.id)">
       <ion-card-header>

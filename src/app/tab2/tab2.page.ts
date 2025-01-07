@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonModal, IonButtons, IonFabButton, ModalController, IonFab, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail } from '@ionic/angular/standalone';
+import { IonModal, IonButtons, IonFabButton, IonRefresher, IonRefresherContent, ModalController, IonFab, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail } from '@ionic/angular/standalone';
 import { LucideAngularModule, X, Star, StarOff } from 'lucide-angular';
 import { AppStorageService } from '../app-storage.service';
 import { DRINKS_FETCHED } from '../app.constants';
@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonHeader, LucideAngularModule, FilterPipe, FormsModule, IonFabButton, IonFab, IonModal, IonButton, IonButtons, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail],
+  imports: [IonHeader, LucideAngularModule, FilterPipe, IonRefresher, IonRefresherContent, FormsModule, IonFabButton, IonFab, IonModal, IonButton, IonButtons, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail],
   providers: [AppStorageService, Storage],
 })
 export class Tab2Page {
@@ -60,6 +60,13 @@ export class Tab2Page {
     } else {
       this.fetchDrinks();
     }
+  }
+
+  refresh(event: CustomEvent) {
+    setTimeout(() => {
+      this.fetchDrinks();
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
   }
 
   async showDetail(drinkId: Number) {

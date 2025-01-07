@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonHeader, ModalController, IonBackButton, IonCard, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonHeader, ModalController, IonBackButton, IonCard, IonRefresher, IonRefresherContent, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
 import { BEANS_FETCHED } from '../app.constants';
 import { CoffeeBean } from '../model/bean';
@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [DetailPage, IonHeader, FormsModule, IonToolbar, FilterPipe, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton],
+  imports: [DetailPage, IonHeader, FormsModule, IonToolbar, FilterPipe, IonRefresher, IonRefresherContent, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton],
   providers: [AppStorageService, CoffeeService],
 })
 
@@ -64,6 +64,13 @@ export class Tab1Page {
       }
     });
     modal.present();
+  }
+
+  refresh(event: CustomEvent) {
+      setTimeout(() => {
+        this.fetchBeans();
+        (event.target as HTMLIonRefresherElement).complete();
+      }, 2000);
   }
 
   // Unused mock data
