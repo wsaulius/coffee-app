@@ -9,6 +9,9 @@ import { CoffeeIngredient } from '../model/ingredient';
 import { CoffeeService } from '../api/coffee.service';
 import { CoffeeDrinkListing } from '../model/api-responses';
 import { DetailPage } from '../detail/detail.page';
+import { FilterPipe } from '../filter.pipe';
+import { FormsModule } from '@angular/forms';
+
 
 
 @Component({
@@ -16,7 +19,7 @@ import { DetailPage } from '../detail/detail.page';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonHeader, LucideAngularModule, IonFabButton, IonFab, IonModal, IonButton, IonButtons, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail],
+  imports: [IonHeader, LucideAngularModule, FilterPipe, FormsModule, IonFabButton, IonFab, IonModal, IonButton, IonButtons, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail],
   providers: [AppStorageService, Storage],
 })
 export class Tab2Page {
@@ -24,6 +27,8 @@ export class Tab2Page {
   readonly StarOff = StarOff;
   readonly X = X;
   drinksArray: Array<CoffeeDrinkListing> = [];
+  searchText: string = "";
+
 
   constructor(
     private appStorage: AppStorageService,
@@ -48,7 +53,7 @@ export class Tab2Page {
     this.drinksArray = data;
   }
 
-  async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
+  async ionViewDidEnter() {
     const data = await this.appStorage.get(DRINKS_FETCHED);
     if (data) {
       this.updateView(data);

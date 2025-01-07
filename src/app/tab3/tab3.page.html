@@ -8,7 +8,7 @@
     </ion-button>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchText"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
     <ion-item-divider>
       <ion-label>Beans</ion-label>
     </ion-item-divider>
-    @for (b of beans; track b.name) {
+    @for (b of beans | filter : searchText; track b.name) {
       <ion-item [button]="true" (click)="showBeanDetail(b)">
         <ion-label>{{ b.name }}</ion-label>
       </ion-item>
@@ -29,7 +29,7 @@
     <ion-item-divider>
       <ion-label>Drinks</ion-label>
     </ion-item-divider>
-    @for (d of drinks; track d.name) {
+    @for (d of drinks | filter : searchText; track d.name) {
       <ion-item [button]="true" (click)="showDrinkDetail(d)">
         <ion-label>{{ d.name }}</ion-label>
       </ion-item>

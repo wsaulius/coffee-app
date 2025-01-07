@@ -7,13 +7,16 @@ import { CoffeeBean } from '../model/bean';
 import { CoffeeDrink } from '../model/drink';
 import { LucideAngularModule, Settings } from 'lucide-angular';
 import { SettingsPage } from '../settings/settings.page';
+import { FilterPipe } from '../filter.pipe';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonItemGroup, IonSearchbar, IonItemDivider, IonButton, IonItem, IonLabel, LucideAngularModule],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, FilterPipe, FormsModule, IonItemGroup, IonSearchbar, IonItemDivider, IonButton, IonItem, IonLabel, LucideAngularModule],
 })
 
 export class Tab3Page {
@@ -22,6 +25,8 @@ export class Tab3Page {
     private appStorage: AppStorageService,
   ) {}
   readonly settingsIcon = Settings
+  searchText: string = "";
+
 
   beans: Array<CoffeeBean> = [];
   drinks: Array<CoffeeDrink> = [];

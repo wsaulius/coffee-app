@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { API_ENDPOINT, API_KEY } from '../app.constants';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CoffeeBeanDetail, CoffeeBeanListing, CoffeeDrinkDetail, CoffeeDrinkListing } from '../model/api-responses';
 import { Observable } from 'rxjs';
+import { AppStorageService } from '../app-storage.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoffeeService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl: String = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private appStorage: AppStorageService,
+  ) { }
 
   getAllCoffeeBeans(): Observable<Array<CoffeeBeanListing>> {
     const url = `${this.apiUrl}/beans`;

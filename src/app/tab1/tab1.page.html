@@ -5,12 +5,12 @@
     </ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchText"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  @for (bean of beansArray; track bean.id) {
+  @for (bean of beansArray | filter : searchText; track bean.id) {
     <ion-card [button]="true" (click)="showDetail(bean.id)">
       <ion-card-header>
         <ion-card-title>{{ bean.name }}</ion-card-title>
@@ -18,7 +18,7 @@
       <ion-card-content>{{ bean.description ?? "No description" }}</ion-card-content>
     </ion-card>
   } @empty {
-    <p>Failed to fetch data! :(</p>
+    <p>Nothing found!</p>
   }
 
 </ion-content>

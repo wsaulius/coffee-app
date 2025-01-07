@@ -5,13 +5,13 @@
     </ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchText"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    @for (drink of drinksArray; track drink.id) {
+    @for (drink of drinksArray | filter : searchText; track drink.id) {
       <ion-item [button]="true" (click)="showDetail(drink.id)">
         <ion-thumbnail slot="start">
           <img src="{{ drink.image_url ?? 'https://live.staticflickr.com/2469/3547568034_4d2204bd31_q_d.jpg' }}" />
@@ -19,7 +19,7 @@
         <ion-label>{{ drink.name }}</ion-label>
       </ion-item>
     } @empty {
-      <p>Failed to fetch data! :(</p>
+      <p>Nothing found!</p>
     }
   </ion-list>
 </ion-content>

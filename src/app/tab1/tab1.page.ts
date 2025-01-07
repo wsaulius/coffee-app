@@ -7,18 +7,22 @@ import { CoffeeSpecies } from '../model/species';
 import { CoffeeBeanListing } from '../model/api-responses';
 import { CoffeeService } from '../api/coffee.service';
 import { DetailPage } from '../detail/detail.page';
+import { FilterPipe } from '../filter.pipe';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [DetailPage, IonHeader, IonToolbar, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton],
+  imports: [DetailPage, IonHeader, FormsModule, IonToolbar, FilterPipe, IonCard, IonBackButton, IonFab, IonCardHeader, IonSearchbar, IonModal, IonButtons, IonButton, IonCardContent, IonCardTitle, IonCardSubtitle, IonTitle, IonContent, IonFabButton],
   providers: [AppStorageService, CoffeeService],
 })
 
 export class Tab1Page {
   beansArray: Array<CoffeeBeanListing> = [];
+  searchText: string = "";
 
   constructor(
     private appStorage: AppStorageService,
@@ -43,7 +47,7 @@ export class Tab1Page {
     this.beansArray = data;
   }
 
-  async ionViewDidEnter() { // TODO: Make sure to update view if appStorage is empty
+  async ionViewDidEnter() {
     const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
       this.updateView(data);
