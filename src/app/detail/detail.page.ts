@@ -9,6 +9,8 @@ import { BEANS_STORAGE, DRINKS_STORAGE, BEANS_FAVORITED, DRINKS_FAVORITED } from
 import { LucideIconData } from 'lucide-angular/icons/types';
 import { CoffeeBean } from '../model/bean';
 import { CoffeeDrink } from '../model/drink';
+import { firstValueFrom } from 'rxjs';
+
 
 @Component({
   selector: 'app-detail',
@@ -33,19 +35,13 @@ export class DetailPage {
   ) { }
 
   async fetchBeanDetails(id: Number) {
-    this.coffeeService.getCoffeeBean(id).subscribe({
-      next: async (data) => {
-        this.appStorage.add(BEANS_STORAGE, new CoffeeBean(id, data.name, data.description, data.roast, data.species, data.country_origin, data.country_roasted));
-      },
-    });
+    const data = await firstValueFrom(await this.coffeeService.getCoffeeBean(id));
+    this.appStorage.add(BEANS_STORAGE, new CoffeeBean(id, data.name, data.description, data.roast, data.species, data.country_origin, data.country_roasted));
   }
 
   async fetchDrinkDetails(id: Number) {
-    this.coffeeService.getCoffeeDrink(id).subscribe({
-      next: async (data) => {
-        this.appStorage.add(DRINKS_STORAGE, new CoffeeDrink(id, data.name, data.description, data.image_url, data.ingredients));
-      },
-    });
+    const data = await firstValueFrom(await this.coffeeService.getCoffeeDrink(id));
+    this.appStorage.add(DRINKS_STORAGE, new CoffeeDrink(id, data.name, data.description, data.image_url, data.ingredients));
   }
 
   async getBean(beanId: Number){

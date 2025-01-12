@@ -11,7 +11,7 @@ import { CoffeeDrinkListing } from '../model/api-responses';
 import { DetailPage } from '../detail/detail.page';
 import { FilterPipe } from '../filter.pipe';
 import { FormsModule } from '@angular/forms';
-
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -40,13 +40,10 @@ export class Tab2Page {
     this.appStorage.set(DRINKS_FETCHED, drinks);
   }
 
-  fetchDrinks() {
-    this.coffeeService.getAllCoffeeDrinks().subscribe({
-      next: (data) => {
-        this.cacheDrinks(data);
-        this.updateView(data);
-      },
-    });
+  async fetchDrinks() {
+    const coffeeDrinks = await firstValueFrom(await this.coffeeService.getAllCoffeeDrinks());
+    this.cacheDrinks(coffeeDrinks);
+    this.updateView(coffeeDrinks);
   }
 
   updateView(data: Array<CoffeeDrinkListing>) {

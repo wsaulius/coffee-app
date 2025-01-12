@@ -8,6 +8,7 @@ import { LucideIconData } from 'lucide-angular/icons/types';
 import { API_ENDPOINT, API_KEY, MUSIC_OPTION } from '../app.constants';
 import { environment } from 'src/environments/environment';
 import { AudioService } from 'src/audio/audio.service';
+import { CoffeeService } from '../api/coffee.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,8 +22,8 @@ export class SettingsPage {
   readonly RotateCcw: LucideIconData = RotateCcw;
   readonly applyChanges: LucideIconData = Check;
   
-  apiEndpoint : String = "";
-  apiKey : String = "";
+  apiEndpoint : String | undefined = undefined;
+  apiKey : String | undefined = undefined;
 
   music: boolean = false;
 
@@ -30,26 +31,29 @@ export class SettingsPage {
     private appStorage: AppStorageService,
     private modalCtrl: ModalController,
     private audioService: AudioService,
-  ) { 
-    appStorage.get(API_ENDPOINT).then((value: string) => {
-      this.apiEndpoint = value;
-    });
-    appStorage.get(API_KEY).then((value: string) => {
-      this.apiKey = value;
-    });
-    appStorage.get(MUSIC_OPTION).then((value: boolean) => {
-      this.music = value;
-    });
+    private coffeeService: CoffeeService,
+  ) { }
+  
+  async ionViewDidEnter() {
+    this.apiEndpoint = await this.appStorage.get(API_ENDPOINT);
+    this.apiKey = await this.appStorage.get(API_KEY);
+    this.music = await this.appStorage.get(MUSIC_OPTION);
+    if(this.apiKey === null) {
+      this.apiKey = await this.coffeeService.getKey();
+    }
+    if(this.apiEndpoint === null) {
+      this.apiEndpoint = await this.coffeeService.getUrl();
+    }
   }
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  apply() {
-    this.appStorage.set(API_ENDPOINT, this.apiEndpoint);
-    this.appStorage.set(API_KEY, this.apiKey);
-    this.appStorage.set(MUSIC_OPTION, this.music);
+  async apply() {
+    await this.appStorage.set(API_ENDPOINT, this.apiEndpoint);
+    await this.appStorage.set(API_KEY, this.apiKey);
+    await this.appStorage.set(MUSIC_OPTION, this.music);
     if(this.music === true) {
       this.audioService.playAudio();
     } else {
@@ -59,9 +63,7 @@ export class SettingsPage {
   }
 
   reset() {
-    this.appStorage.get(API_ENDPOINT).then((value) => {
-      this.apiEndpoint = environment.apiUrl;
-    });
+    this.apiEndpoint = environment.apiUrl;
   }
 
 }

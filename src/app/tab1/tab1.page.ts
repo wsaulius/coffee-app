@@ -9,7 +9,7 @@ import { CoffeeService } from '../api/coffee.service';
 import { DetailPage } from '../detail/detail.page';
 import { FilterPipe } from '../filter.pipe';
 import { FormsModule } from '@angular/forms';
-import { AudioService } from 'src/audio/audio.service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -36,19 +36,17 @@ export class Tab1Page {
   }
 
   async fetchBeans() {
-    this.coffeeService.getAllCoffeeBeans().subscribe({
-      next: (data) => {
-        this.cacheBeans(data);
-        this.updateView(data);
-      },
-    });
+    const coffeeBeans = await firstValueFrom(await this.coffeeService.getAllCoffeeBeans());
+    this.cacheBeans(coffeeBeans);
+    this.updateView(coffeeBeans);
+
   }
 
   updateView(data: Array<CoffeeBeanListing>) {
     this.beansArray = data;
   }
 
-  async ionViewDidEnter() {
+  async ionViewDidEnter() {    
     const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
       this.updateView(data);
@@ -67,11 +65,10 @@ export class Tab1Page {
     modal.present();
   }
 
-  refresh(event: CustomEvent) {
-      setTimeout(() => {
-        this.fetchBeans();
-        (event.target as HTMLIonRefresherElement).complete();
-      }, 2000);
+  async refresh(event: CustomEvent) {
+    this.fetchBeans().then(() => {
+      (event.target as HTMLIonRefresherElement).complete();
+    });
   }
 
   // Unused mock data
