@@ -36,12 +36,16 @@ export class DetailPage {
 
   async fetchBeanDetails(id: Number) {
     const data = await firstValueFrom(await this.coffeeService.getCoffeeBean(id));
-    this.appStorage.add(BEANS_STORAGE, new CoffeeBean(id, data.name, data.description, data.roast, data.species, data.country_origin, data.country_roasted));
+    const newBean = new CoffeeBean(id, data.name, data.description, data.roast, data.species, data.country_origin, data.country_roasted)
+    this.appStorage.add(BEANS_STORAGE, newBean);
+    return newBean;
   }
 
   async fetchDrinkDetails(id: Number) {
     const data = await firstValueFrom(await this.coffeeService.getCoffeeDrink(id));
-    this.appStorage.add(DRINKS_STORAGE, new CoffeeDrink(id, data.name, data.description, data.image_url, data.ingredients));
+    const newDrink = new CoffeeDrink(id, data.name, data.description, data.image_url, data.ingredients);
+    this.appStorage.add(DRINKS_STORAGE, newDrink);
+    return newDrink;
   }
 
   async getBean(beanId: Number){
@@ -52,8 +56,7 @@ export class DetailPage {
         return cachedBean;
       }
     }
-    this.fetchBeanDetails(beanId);
-    return null;
+    return await this.fetchBeanDetails(beanId);
   }
 
   async getDrink(drinkId: Number){
@@ -64,22 +67,15 @@ export class DetailPage {
         return cachedDrink;
       }
     }
-    this.fetchDrinkDetails(drinkId);
-    return null;
+    return await this.fetchDrinkDetails(drinkId);
   }
 
-  async ionViewDidEnter() { // TODO: speed this up!
-    if(this.beanId !== undefined) {
-      let result;
-      do {
-        result = await this.getBean(this.beanId);
-      } while (result === null);
+  async ionViewDidEnter() {
+    if (this.beanId !== undefined) {
+      const result = await this.getBean(this.beanId);
       this.bean = result;
     } else if (this.drinkId !== undefined) {
-      let result;
-      do {
-        result = await this.getDrink(this.drinkId);
-      } while (result === null);
+      const result = await this.getDrink(this.drinkId);
       this.drink = result;
     }
     this.favoritedState = await this.setIcon();

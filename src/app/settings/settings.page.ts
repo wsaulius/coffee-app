@@ -5,7 +5,7 @@ import { LucideAngularModule, X, RotateCcw, Check } from 'lucide-angular';
 import { IonContent, ModalController, IonHeader, IonTitle, IonInput, IonToggle, IonListHeader, IonLabel, IonList, IonItem, IonFab, IonToolbar, IonButtons, IonButton, IonFabButton } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
 import { LucideIconData } from 'lucide-angular/icons/types';
-import { API_ENDPOINT, API_KEY, MUSIC_OPTION } from '../app.constants';
+import { API_ENDPOINT, API_KEY, MUSIC_OPTION, MOCK_DATA } from '../app.constants';
 import { environment } from 'src/environments/environment';
 import { AudioService } from 'src/audio/audio.service';
 import { CoffeeService } from '../api/coffee.service';
@@ -26,6 +26,7 @@ export class SettingsPage {
   apiKey : String | undefined = undefined;
 
   music: boolean = false;
+  mockData: boolean = false;
 
   constructor(
     private appStorage: AppStorageService,
@@ -38,6 +39,7 @@ export class SettingsPage {
     this.apiEndpoint = await this.appStorage.get(API_ENDPOINT);
     this.apiKey = await this.appStorage.get(API_KEY);
     this.music = await this.appStorage.get(MUSIC_OPTION);
+    this.mockData = await this.appStorage.get(MOCK_DATA);
     if(this.apiKey === null) {
       this.apiKey = await this.coffeeService.getKey();
     }
@@ -51,9 +53,13 @@ export class SettingsPage {
   }
 
   async apply() {
+    if ((await this.appStorage.get(MOCK_DATA) != this.mockData)) {
+      await this.appStorage.clear();
+    }
     await this.appStorage.set(API_ENDPOINT, this.apiEndpoint);
     await this.appStorage.set(API_KEY, this.apiKey);
     await this.appStorage.set(MUSIC_OPTION, this.music);
+    await this.appStorage.set(MOCK_DATA, this.mockData);
     if(this.music === true) {
       this.audioService.playAudio();
     } else {

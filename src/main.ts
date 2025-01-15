@@ -4,11 +4,11 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
 import { AppStorageService } from './app/app-storage.service';
-import { APP_INITIALIZER } from '@angular/core';
 
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { AudioService } from './audio/audio.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -18,6 +18,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withFetch()),
     Storage,
     AppStorageService,
-    {provide: APP_INITIALIZER, useFactory: (service: AppStorageService) => () => service.init(), deps: [AppStorageService], multi: true}
+    AudioService
   ]
 });

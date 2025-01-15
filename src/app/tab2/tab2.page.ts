@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonModal, IonButtons, IonFabButton, IonRefresher, IonRefresherContent, ModalController, IonFab, IonButton, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonSearchbar, IonItem, IonLabel, IonThumbnail } from '@ionic/angular/standalone';
 import { LucideAngularModule, X, Star, StarOff } from 'lucide-angular';
 import { AppStorageService } from '../app-storage.service';
-import { DRINKS_FETCHED } from '../app.constants';
+import { DRINKS_FETCHED, MOCK_DATA } from '../app.constants';
 import { Storage } from '@ionic/storage-angular';
 import { CoffeeDrink } from '../model/drink';
 import { CoffeeIngredient } from '../model/ingredient';
@@ -28,6 +28,7 @@ export class Tab2Page {
   readonly X = X;
   drinksArray: Array<CoffeeDrinkListing> = [];
   searchText: string = "";
+  mockData = false;
 
 
   constructor(
@@ -51,6 +52,13 @@ export class Tab2Page {
   }
 
   async ionViewDidEnter() {
+    const mockData = await this.appStorage.get(MOCK_DATA);
+    if (mockData == true) {
+      this.drinksArray = [];
+      this.mockData = mockData;
+      this.generateMockData();
+      return;
+    }
     const data = await this.appStorage.get(DRINKS_FETCHED);
     if (data) {
       this.updateView(data);
@@ -67,13 +75,25 @@ export class Tab2Page {
   }
 
   async showDetail(drinkId: Number) {
-    const modal = await this.modalCtrl.create({
-      component: DetailPage,
-      componentProps: {
-        drinkId: drinkId
-      }
-    });
-    return await modal.present();
+    if (this.mockData == false) {
+      const modal = await this.modalCtrl.create({
+        component: DetailPage,
+        componentProps: {
+          drinkId: drinkId
+        }
+      });
+      return await modal.present();
+    } else {
+      const drink = this.drinksArray.find((drink) => drink.id === drinkId);
+      const modal = await this.modalCtrl.create({
+        component: DetailPage,
+        componentProps: {
+          drink: drink,
+        },
+      });
+      return await modal.present();
+    }
+
   }
 
   // Unused mock data

@@ -12,3 +12,4 @@ export const API_ENDPOINT = 'api_endpoint'
 export const API_KEY = 'api_key'
 // Other
 export const MUSIC_OPTION = 'music_option'
+export const MOCK_DATA = 'mock_data'

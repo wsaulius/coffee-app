@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonHeader, ModalController, IonBackButton, IonCard, IonRefresher, IonRefresherContent, IonFab, IonCardHeader, IonButtons, IonButton, IonCardTitle, IonModal, IonSearchbar, IonCardContent, IonCardSubtitle, IonToolbar, IonFabButton, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { AppStorageService } from '../app-storage.service';
-import { BEANS_FETCHED } from '../app.constants';
+import { BEANS_FETCHED, MOCK_DATA } from '../app.constants';
 import { CoffeeBean } from '../model/bean';
 import { CoffeeSpecies } from '../model/species';
 import { CoffeeBeanListing } from '../model/api-responses';
@@ -24,6 +24,7 @@ import { firstValueFrom } from 'rxjs';
 export class Tab1Page {
   beansArray: Array<CoffeeBeanListing> = [];
   searchText: string = "";
+  mockData = false;
 
   constructor(
     private appStorage: AppStorageService,
@@ -47,6 +48,13 @@ export class Tab1Page {
   }
 
   async ionViewDidEnter() {    
+    const mockData = await this.appStorage.get(MOCK_DATA);
+    if (mockData == true) {
+      this.beansArray = [];
+      this.mockData = mockData;
+      this.generateMockData();
+      return;
+    }
     const data = await this.appStorage.get(BEANS_FETCHED);
     if (data) {
       this.updateView(data);
@@ -56,13 +64,24 @@ export class Tab1Page {
   }
 
   async showDetail(beanId: Number) {
-    const modal = await this.modalCtrl.create({
-      component: DetailPage,
-      componentProps: {
-        beanId: beanId
-      }
-    });
-    modal.present();
+    if (this.mockData == false) {
+      const modal = await this.modalCtrl.create({
+        component: DetailPage,
+        componentProps: {
+          beanId: beanId
+        }
+      });
+      modal.present();
+    } else {
+      const bean = this.beansArray.find((bean) => bean.id === beanId);
+      const modal = await this.modalCtrl.create({
+        component: DetailPage,
+        componentProps: {
+          bean: bean,
+        },
+      });
+      return await modal.present();
+    }
   }
 
   async refresh(event: CustomEvent) {

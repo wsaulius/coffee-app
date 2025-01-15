@@ -17,6 +17,5 @@ export class TabsPage {
   readonly coffeeBean = coffeeBean;
   readonly Star = Star;
 
-  constructor(private audioService: AudioService) {
-  }
+  constructor(audioService: AudioService) {}
 }
