@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package dev.robtet.caffeman;
 
 import com.getcapacitor.BridgeActivity;
 

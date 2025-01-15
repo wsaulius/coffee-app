@@ -1,14 +1,18 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.gitlab.robustetus.coffee-app',
-  appName: 'coffee-app',
+  appId: 'dev.robtet.caffeman',
+  appName: 'Caffeman',
   webDir: 'www',
+  server: {
+    androidScheme: 'http',
+    cleartext: true
+  },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
+      launchShowDuration: 2000,
       launchAutoHide: true,
-      launchFadeOutDuration: 3000,
+      launchFadeOutDuration: 1000,
       backgroundColor: "#ffffffff",
       androidSplashResourceName: "splash",
       androidScaleType: "CENTER_CROP",
@@ -20,7 +24,7 @@ const config: CapacitorConfig = {
       splashImmersive: true,
       layoutName: "launch_screen",
       useDialog: true,
-    },
+    }
   },
 };
 
